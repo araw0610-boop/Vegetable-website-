@@ -1,0 +1,105 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial;
+}
+
+body {
+  background: #f2f2f2;
+}
+
+/* Navbar */
+nav {
+  background: linear-gradient(45deg, #1e3c72, #2a5298);
+  padding: 15px;
+  text-align: center;
+}
+
+nav a {
+  color: white;
+  margin: 0 15px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Banner */
+.banner {
+  height: 250px;
+  background: url('https://images.unsplash.com/photo-1542838132-92c53300491e') no-repeat center/cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.banner h1 {
+  background: rgba(0,0,0,0.5);
+  padding: 10px 20px;
+  border-radius: 10px;
+  animation: fadeIn 2s;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+/* Section */
+.section {
+  padding: 30px;
+  text-align: center;
+}
+
+/* Products */
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.card img {
+  width: 100%;
+}
+
+button {
+  padding: 10px;
+  background: orange;
+  border: none;
+}
+
+/* Footer */
+footer {
+  background: #333;
+  color: white;
+  text-align: center;
+  padding: 15px;
+}
+#cart-items {
+  list-style: none;
+  padding: 10px;
+}
+
+#cart-items li {
+  background: white;
+  margin: 5px;
+  padding: 8px;
+  border-radius: 5px;
+}
+#cart-items li b {
+  color: green;
+}
+input {
+  padding: 10px;
+  width: 80%;
+  margin: 5px;
+  border-radius: 5px;
+  border: 1px solid gray;
+}
