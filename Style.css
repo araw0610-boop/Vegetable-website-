@@ -103,3 +103,7 @@ input {
   border-radius: 5px;
   border: 1px solid gray;
 }
+.product img {
+  width: 100%;
+  border-radius: 10px;
+}
