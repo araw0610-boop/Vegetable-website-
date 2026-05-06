@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Products</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <a href="index.html">Home</a>
+  <a href="product.html">Products</a>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+</nav>
+
+
+<!-- SEARCH -->
+<input type="text" id="search" placeholder="Search vegetables..." onkeyup="searchProduct()">
+<div class="banner">
+<h1>Our Products</h1>
+</div>
+<div class ="section">
+
+<p id="noResult" style="display:none; color:red;">No products found</p>
+<div class ="products">
+<!-- PRODUCTS -->
+<div class="card">
+  <img src="Images/tomato.jpg" width="100">
+  <h3>Tomato</h3>
+  <p>₹20/kg</p>
+
+<button onclick="changeQty('Tomato', 20, 1, 'Images/tomato.jpg')">+</button>
+<button onclick="changeQty('Tomato', 20, -1, 'tomato.jpg')">-</button>
+</div>
+
+<div class="card">
+  <img src="Images/potato.jpg" width="100">
+  <h3>Potato</h3>
+  <p>₹15/kg</p>
+
+  <button onclick="changeQty('Potato', 15, 1,'Images/potato.jpg')">+</button>
+  <button onclick="changeQty('Potato', 15, -1)">-</button>
+</div>
+<div class="card">
+  <img src="Images/garlic.jpg" width="100">
+  <h3>Garlic</h3>
+  <p>₹50/kg</p>
+
+  <button onclick="changeQty('garlic', 20, 1, 'Images/garlic.jpg')">+</button>
+  <button onclick="changeQty('garlic', 20, -1)">-</button>
+</div>
+
+<div class="card">
+  <img src="Images/onion.jpg" width="100">
+  <h3>Onion</h3>
+  <p>₹150/kg</p>
+
+  <button onclick="changeQty('onion', 15, 1,'Images/onion.jpg')">+</button>
+  <button onclick="changeQty('onion', 15, -1)">-</button>
+</div>
+<div class="card">
+  <img src="Images/pea.jpg" width="100">
+  <h3>Pea</h3>
+  <p>₹60/kg</p>
+
+  <button onclick="changeQty('pea', 20, 1, 'Images/pea.jpg')">+</button>
+  <button onclick="changeQty('pea', 20, -1)">-</button>
+</div>
+
+<div class="card">
+  <img src="Images/cabbage.jpg" width="100">
+  <h3>Cabbage</h3>
+  <p>₹15/kg</p>
+
+  <button onclick="changeQty('cabbage', 15, 1,'Images/cabbage.jpg')">+</button>
+  <button onclick="changeQty('cabbage', 15, -1)">-</button>
+</div>
+<div class="card">
+  <img src="Images/ginger.jpg" width="100">
+  <h3>Ginger</h3>
+  <p>₹200/kg</p>
+
+  <button onclick="changeQty('ginger', 20, 1,'Images/ginger.jpg')">+</button>
+  <button onclick="changeQty('ginger', 20, -1)">-</button>
+</div>
+
+<div class="card">
+  <img src="Images/carrot.jpg" width="100">
+  <h3>Carrot</h3>
+  <p>₹95/kg</p>
+
+  <button onclick="changeQty('carrot', 15, 1,'Images/carrot.jpg')">+</button>
+  <button onclick="changeQty('carrot', 15, -1)">-</button>
+</div>
+</div>
+
+<hr>
+
+<!-- CART -->
+<h2>My Cart</h2>
+
+<div id="cart-container"></div>
+
+<h3 id="total">Total: ₹0</h3>
+
+<button onclick="clearCart()">Clear Cart</button>
+<button onclick="sendWhatsApp()">Order on WhatsApp</button>
+
+<!-- CUSTOMER -->
+<h3>Customer Details</h3>
+
+<input type="text" id="name" placeholder="Enter Name"><br><br>
+<input type="text" id="address" placeholder="Enter Address"><br><br>
+<input type="text" id="mobile" placeholder="Enter Mobile"><br><br>
+
+<!-- SCRIPT -->
+<script>
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+function changeQty(name, price, change, image) {
+
+  let found = false;
+
+  for (let i = 0; i < cart.length; i++) {
+    if (cart[i].name === name) {
+      cart[i].qty += change;
+
+      if (cart[i].qty <= 0) {
+        cart.splice(i, 1);
+      }
+
+      found = true;
+      break;
+    }
+  }
+
+  if (!found && change > 0) {
+    cart.push({ name: name, price: price, qty: 1, image: image });
+  }
+
+  updateCart();
+}
+
+function updateCart() {
+
+  let container = document.getElementById("cart-container");
+  let total = document.getElementById("total");
+
+  container.innerHTML = "";
+  let sum = 0;
+
+  cart.forEach((item, index) => {
+
+    let div = document.createElement("div");
+    div.className = "cart-item";
+
+    div.innerHTML = `
+      <img src="${item.image}" width="50">
+      <span>${item.name} (${item.qty})</span>
+      <span>₹${item.price * item.qty}</span>
+      <button onclick="removeItem(${index})">❌</button>
+    `;
+
+    container.appendChild(div);
+
+    sum += item.price * item.qty;
+  });
+
+  total.innerText = "Total: ₹" + sum;
+  localStorage.setItem("cart", JSON.stringify(cart));
+}
+
+function removeItem(index) {
+  cart.splice(index, 1);
+  updateCart();
+}
+
+function clearCart() {
+  cart = [];
+  updateCart();
+}
+
+function searchProduct() {
+  let input = document.getElementById("search").value.toLowerCase();
+  let cards = document.getElementsByClassName("card");
+  let found = false;
+
+  for (let i = 0; i < cards.length; i++) {
+    let title = cards[i].getElementsByTagName("h3")[0].innerText.toLowerCase();
+
+    if (title.includes(input)) {
+      cards[i].style.display = "block";
+      found = true;
+    } else {
+      cards[i].style.display = "none";
+    }
+  }
+
+  document.getElementById("noResult").style.display = found ? "none" : "block";
+}
+
+function sendWhatsApp() {
+
+  let name = document.getElementById("name").value;
+  let address = document.getElementById("address").value;
+  let mobile = document.getElementById("mobile").value;
+
+  if (!name || !address || !mobile) {
+    alert("Please fill all details");
+    return;
+  }
+
+  if (cart.length === 0) {
+    alert("Cart empty hai");
+    return;
+  }
+
+  let message = "🛒 *Order Summary* %0A%0A";
+
+  let total = 0;
+
+  cart.forEach(item => {
+    let itemTotal = item.price * item.qty;
+    total += itemTotal;
+
+    message += "• " + item.name + " x " + item.qty + " = ₹" + itemTotal + "%0A";
+  });
+
+  message += "%0A--------------------%0A";
+  message += " *Total: ₹" + total + "*%0A%0A";
+
+  message += "Name: " + name + "%0A";
+  message += " Address: " + address + "%0A";
+  message += "Mobile: " + mobile;
+
+  let phone = "918400073204"; // apna number daalo
+
+  window.open("https://wa.me/" + phone + "?text=" + message);
+}
+updateCart();
+
+</script>
+
+</body>
+</html>
